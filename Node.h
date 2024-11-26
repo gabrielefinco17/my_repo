@@ -4,38 +4,38 @@ using namespace std;
 
 class Node
 {
-    int value, weight;
-    Node* left;
-    Node* right;
+    int data, weight;
+    Node* lchild;
+    Node* rchild;
 
 public:
     Node(int key)
     {
-        value = key;
+        data = key;
         weight = 1;
-        left = nullptr;
-        right = nullptr;
+        lchild = nullptr;
+        rchild = nullptr;
     }
     
-    Node* r_insert (int num)
+    Node* insertR (int num)
     {
-        if(this->value == num)
+        if(this->data == num)
         {
             this->weight ++;
             return this;
         }
-        if(num < this->value)
+        if(num < this->data)
         {
-            if(this->left == nullptr){
-                this->left = new Node (num);
+            if(this->lchild == nullptr){
+                this->lchild = new Node (num);
             }else{
-                this->left->r_insert(num);
+                this->lchild->insertR(num);
             }
         }else{
-            if(this->right == nullptr){
-                this->right = new Node (num);
+            if(this->rchild == nullptr){
+                this->rchild = new Node (num);
             }else{
-                this->right->r_insert(num);
+                this->rchild->insertR(num);
             }
         }
         return this;
@@ -43,10 +43,10 @@ public:
     
     void inOrder()
     {
-        if(this->left != nullptr) this->left->inOrder();
+        if(this->lchild != nullptr) this->lchild->inOrder();
             
-        cout << this->value << " ";
+        cout << this->data << " ";
         
-        if(this->right != nullptr) this->right->inOrder();
+        if(this->rchild != nullptr) this->rchild->inOrder();
     }
 };
