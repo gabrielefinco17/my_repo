@@ -4,6 +4,7 @@ using namespace std;
 
 class Node
 {
+private:
     int data, weight;
     Node* lchild;
     Node* rchild;
@@ -135,5 +136,42 @@ public:
         cout << this->data << " ";
         
         if(this->rchild != nullptr) this->rchild->inOrder();
+    }
+    
+    friend ostream& operator << (ostream& os, const Node* n){
+        
+        os << "Parent: " << n->data << endl;
+        
+        os << "Left Child: ";
+        if (n->lchild == nullptr) {
+            os << "NULL" << endl;
+        }else{
+            os << n->lchild->data << endl;
+        }
+        
+        os << "Right Child: ";
+        if (n->rchild == nullptr) {
+            os << "NULL" << endl;
+        }else{
+            os << n->rchild->data << endl;
+        }
+        
+        return os;
+    }
+    
+    
+    friend istream& operator >> (istream& is, Node* n){
+        int a;
+        cout << "Please insert data... ";
+        
+        while(!(is>>a)){
+            cout << "Invalid data, try again... ";
+            is.clear();
+            is.ignore(40, '\n');
+        }
+        
+        n -> insertR(a);
+        
+        return is;
     }
 };
