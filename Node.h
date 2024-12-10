@@ -10,7 +10,8 @@ private:
     Node* rchild;
 
 public:
-    Node(int key)
+    Node (){}
+    Node (int key)
     {
         data = key;
         weight = 1;
@@ -105,8 +106,10 @@ public:
     }
 
     
+    
     Node* insertR (int num)
     {
+        
         if(this->data == num)
         {
             this->weight ++;
@@ -129,14 +132,127 @@ public:
         return this;
     }
     
+    
+    
     void inOrder()
     {
+        
         if(this->lchild != nullptr) this->lchild->inOrder();
             
         cout << this->data << " ";
         
         if(this->rchild != nullptr) this->rchild->inOrder();
+        
     }
+    
+    
+    
+    void preOrder(Node* node)
+    {
+        
+        if(node==NULL) return;
+        
+        cout << this->data << " ";
+        preOrder(this->lchild);
+        preOrder(this->rchild);
+        
+    }
+
+    
+    
+    void postOrder(Node* node)
+    {
+        
+        if(node==NULL) return;
+        
+        postOrder(this->lchild);
+        postOrder(this->rchild);
+        cout << this->data << " ";
+        
+    }
+
+    
+    
+    Node* deleteNode(int num){
+
+        Node *current = this;
+        Node *parent = this;
+        Node *temp = this;
+        
+        bool check {true};
+        
+        do{
+            if(current==nullptr){
+                
+                cout << "Node not found!" << endl;
+                check = false;
+                
+            }
+            
+            if(current->data==num){
+                
+                if(current->lchild==nullptr && current->rchild==nullptr){
+                    
+                    if(current->data==parent->lchild->data){
+                        
+                        delete current;
+                        current = nullptr;
+                        parent->lchild = nullptr;
+                        check = false;
+                        return parent;
+                        
+                    }else{
+                        
+                        delete current;
+                        current = nullptr;
+                        parent->rchild = nullptr;
+                        check = false;
+                        return parent;
+                        
+                    }
+                    
+                }else if(current->lchild==nullptr){
+                    
+                    temp = current->rchild;
+                    current->data = temp->data;
+                    current->lchild = temp->lchild;
+                    current->rchild = temp->rchild;
+                    delete temp;
+                    temp = nullptr;
+                    check = false;
+                    return this;
+                    
+                } else if(current->rchild==nullptr){
+                    
+                    temp = current->lchild;
+                    current->data = temp->data;
+                    current->lchild = temp->lchild;
+                    current->rchild = temp->rchild;
+                    delete temp;
+                    temp = nullptr;
+                    check = false;
+                    return this;
+                    
+                }
+                
+            } else if(num<current->data) {
+                
+                parent = current;
+                current = current->lchild;
+                
+            } else {
+                
+                parent = current;
+                current = current->rchild;
+                
+            }
+            
+        }while(check);
+    
+        return current;
+
+    }
+
     
     friend ostream& operator << (ostream& os, const Node* n){
         
@@ -160,8 +276,9 @@ public:
     }
     
     
-    friend istream& operator >> (istream& is, Node* n){
-        int a;
+    friend istream& operator >> (istream& is, Node*& n){
+        n = new Node();
+        int a{0};
         cout << "Please insert data... ";
         
         while(!(is>>a)){
@@ -169,8 +286,11 @@ public:
             is.clear();
             is.ignore(40, '\n');
         }
-        
-        n -> insertR(a);
+
+        (*n).data = a;
+        (*n).lchild = nullptr;
+        (*n).rchild = nullptr;
+        (*n).weight = 1;
         
         return is;
     }
